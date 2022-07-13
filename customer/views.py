@@ -94,7 +94,8 @@ class CategoryInsert(generics.CreateAPIView):
         active =data['active']
         created = data['created']
         modified = data['modified']
-        query=Category.objects.create(name=name,slug=slug,image=image,description=description,featured=featured,active=active,created=created,modified=modified)
+        abc=Category.objects.create(name=name,slug=slug,image=image,description=description,featured=featured,active=active,created=created,modified=modified)
+        query = Category.objects.filter(id=abc.id).values("name","slug","image","description","featured","active","created","modified").first()
         return_arr={
             'msg':'Category added successfully',
             'data': query
