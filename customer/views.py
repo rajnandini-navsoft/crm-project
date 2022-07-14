@@ -109,15 +109,17 @@ class ProductInsert(generics.CreateAPIView):
         slug = data['slug']
         image =data['image']
         brand =data['brand']
+        url =data['url']
         shipping = data['shipping']
         description=data['description']
         price=data['price']
         category=data['category']
         featured = data['featured']
         active = data['active']
-        created =data['created']
-        modified =data['modified']
-        query=Product.objects.create(name=name,slug=slug,image=image,brand=brand,shipping=shipping,description=description,price=price,category=category,featured=featured,active=active,created=created,modified=modified)
+        # created =data['created']
+        # modified =data['modified']
+        abc=Product.objects.create(name=name,slug=slug,image=image,brand=brand,url=url,shipping=shipping,description=description,price=price,category_id=category,featured=featured,active=active)
+        query = Product.objects.filter(id=abc.id).values("name","slug","image","brand","shipping","description","price","category","featured","active","created","modified").first()
         return_arr={
             'msg':'Data Inserted Successfully',
             'data':query
@@ -138,9 +140,10 @@ class ProductUpdate(generics.UpdateAPIView):
         category=data['category']
         featured = data['featured']
         active = data['active']
-        created =data['created']
-        modified =data['modified']
-        query=Product.objects.filter(id=pk).update(name=name,slug=slug,image=image,brand=brand,shipping=shipping,description=description,price=price,category=category,featured=featured,active=active,created=created,modified=modified)
+        # created =data['created']
+        # modified =data['modified']
+        query=Product.objects.filter(id=pk).update(name=name,slug=slug,image=image,brand=brand,shipping=shipping,description=description,price=price,category=category,featured=featured,active=active)
+        query = Product.objects.filter(id=pk).values("name","slug","image","brand","shipping","description","price","category","featured","active","created","modified").first()
         return_arr={
             'msg':"Data Updated Successfully",
             'data':query
