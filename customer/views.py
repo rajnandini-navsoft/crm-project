@@ -94,13 +94,35 @@ class CategoryInsert(generics.CreateAPIView):
         active =data['active']
         created = data['created']
         modified = data['modified']
-        abc=Category.objects.create(name=name,slug=slug,image=image,description=description,featured=featured,active=active,created=created,modified=modified)
-        query = Category.objects.filter(id=abc.id).values("name","slug","image","description","featured","active","created","modified").first()
+        category_save=Category.objects.create(name=name,slug=slug,image=image,description=description,featured=featured,active=active,created=created,modified=modified)
+        category_display = Category.objects.filter(id=category_save.id).values("name","slug","image","description","featured","active","created","modified").first()
         return_arr={
             'msg':'Category added successfully',
-            'data': query
+            'data': category_display
         }
         return Response(return_arr)
+
+class CategoryUpdate(generics.UpdateAPIView):
+    def put(self,request,pk,format=None):
+        data=request.data
+        name=data["name"]
+        slug=data["slug"]
+        image=data["image"]
+        description=data["description"]
+        featured=data["featured"]
+        active=data["active"]
+        # created=data["created"]
+
+        Category.objects.filter(id=pk).values(name=name,slug=slug,image=image,description=description,featured=featured,active=active)
+        category_update_display=Category.objects.flter(id=pk).values("name","slug","image","description","featured","active")
+
+        return_arr={
+            'msg':"Data Updated Successfully",
+            'data':category_update_display
+        }
+        return Response(return_arr)
+
+
 
 class ProductInsert(generics.CreateAPIView):
     def post(self,request,format=None):
@@ -116,13 +138,12 @@ class ProductInsert(generics.CreateAPIView):
         category=data['category']
         featured = data['featured']
         active = data['active']
-        # created =data['created']
-        # modified =data['modified']
-        abc=Product.objects.create(name=name,slug=slug,image=image,brand=brand,url=url,shipping=shipping,description=description,price=price,category_id=category,featured=featured,active=active)
-        query = Product.objects.filter(id=abc.id).values("name","slug","image","brand","shipping","description","price","category","featured","active","created","modified").first()
+  
+        product_save=Product.objects.create(name=name,slug=slug,image=image,brand=brand,url=url,shipping=shipping,description=description,price=price,category_id=category,featured=featured,active=active)
+        product_display = Product.objects.filter(id=product_save.id).values("name","slug","image","brand","shipping","description","price","category","featured","active","created","modified").first()
         return_arr={
             'msg':'Data Inserted Successfully',
-            'data':query
+            'data':product_display
         }
         return Response(return_arr)
 
@@ -140,15 +161,20 @@ class ProductUpdate(generics.UpdateAPIView):
         category=data['category']
         featured = data['featured']
         active = data['active']
-        # created =data['created']
-        # modified =data['modified']
-        query=Product.objects.filter(id=pk).update(name=name,slug=slug,image=image,brand=brand,shipping=shipping,description=description,price=price,category=category,featured=featured,active=active)
-        query = Product.objects.filter(id=pk).values("name","slug","image","brand","shipping","description","price","category","featured","active","created","modified").first()
+   
+        #To update data
+        Product.objects.filter(id=pk).update(name=name,slug=slug,image=image,brand=brand,shipping=shipping,description=description,price=price,category=category,featured=featured,active=active)
+        #To display the updated data
+        product_update_display = Product.objects.filter(id=pk).values("name","slug","image","brand","shipping","description","price","category","featured","active","created","modified").first()
         return_arr={
             'msg':"Data Updated Successfully",
-            'data':query
+            'data':product_update_display
         }
         return Response(return_arr)
+
+
+        
+
 
         
 
