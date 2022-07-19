@@ -218,6 +218,11 @@ class MultiDataFetch(generics.ListAPIView):
         return_customer_array=[]
 
         for each_product in product_table_fetch:
+            cat=Category.objects.filter(id=each_product.category_id).values("name","id").first()
+            # cat_arr={
+            #     "name":cat["name"],
+            #     "id":cat["id"]
+            # }
             each_array={
                 "name" : each_product.name,
                 "slug" : each_product.slug,
@@ -227,7 +232,7 @@ class MultiDataFetch(generics.ListAPIView):
                 "shipping" :each_product.shipping,
                 "description":each_product.description,
                 "price":each_product.price,
-                "category":each_product.category_id,
+                "category":cat,
                 "featured" : each_product.featured,
                 "active" : each_product.active
             }
