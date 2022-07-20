@@ -5,6 +5,9 @@ from .models import *
 from rest_framework import generics
 from .serializers import *
 from rest_framework.response import Response
+from django.http import JsonResponse
+from django.forms.models import model_to_dict
+
 
 
 class CustomerCreate(generics.CreateAPIView):
@@ -56,14 +59,6 @@ class CustomerSingle(generics.ListAPIView):
         else:
             return_array={}
         return Response(return_array)
-
-    
-    
-
-# class CustomerDetail(generics.RetrieveAPIView):
-#     # API endpoint that returns a single customer by pk.
-#     queryset = Customer.objects.all()
-#     serializer_class = CustomerSerializer
 
 class CustomerUpdate(generics.UpdateAPIView):
     def put(self,request,pk,format=None):
@@ -259,7 +254,46 @@ class MultiDataFetch(generics.ListAPIView):
         }
         return Response(return_arr)
 
-            
+class StateSaveData(generics.CreateAPIView):
+    def post(self,request,format=None):
+        data=request.data
+        name=data['name']
+        # state_details_save=State.objects.create(name=name)#This will return object,first we have to change the object into dictonary and then into json,if we want to display the the data after inserting it into db.
+        state_details_create=State.objects.create(name=name)#This will only return, if the data is inserted succesfully or not
+        state_details_display=State.objects.filter(id=state_details_create.id).values("name").first()#This will return the inserted data details
+
+        return_data={
+            "msg":"State details inserted successfully",
+            "state_name":state_details_display
+        }
+        return Response(return_data)
+#--------------to get all state details----------------------
+class StateGetData(generics.ListAPIView):
+    def get(self,pk,format=None):
+        state_list_details=State.objects.all()
+        state_arr=[]
+        for each_state in state_list_details:
+            each_arr={
+                'name':each_state.name,
+                'id':each_state.id
+            }
+            state_arr.append(each_arr)
+        return Response(state_arr)
+
+#--------------to get state details using pk---------------------
+class StateSingleData(generics.ListAPIView):
+    def get(self,request,pk):
+        state_detail_id=State.objects.filter(id=pk).first()
+        if state_detail_id:
+           return_arr={
+               'name':state_detail_id.name
+
+           }
+        else:
+            return_arr={}
+        return Response(return_arr)
+        
+          
         
     
         

@@ -22,3 +22,14 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = '__all__'
 
+class CustomerAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomerAddress
+        fields = '__all__'
+
+class StateSerilaizer(serializers.ModelSerializer):
+    class Meta:
+        model=State
+        fields ='__all__'
+
+

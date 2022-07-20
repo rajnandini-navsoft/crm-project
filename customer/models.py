@@ -63,3 +63,19 @@ class Review(models.Model):
 
     def __str__(self):
         return self.review
+
+class State(models.Model):
+    name=models.CharField(max_length=255)
+
+class CustomerAddress(models.Model):
+    name=models.CharField(max_length=100)
+    email=models.EmailField(max_length=200,null =True,blank=True)
+    phone=models.CharField(max_length=100)
+    address=models.CharField(max_length=100,blank=True,null=True)
+    city=models.CharField(max_length=100)
+    pincode=models.CharField(max_length=100)
+    state_id=models.ForeignKey(State,on_delete=models.CASCADE)
+    customer_id=models.ForeignKey(CustomerAdd,on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
+    
