@@ -292,6 +292,12 @@ class StateSingleData(generics.ListAPIView):
         else:
             return_arr={}
         return Response(return_arr)
+
+#-----------------To update State data-----------------
+
+
+
+
         
           
         
